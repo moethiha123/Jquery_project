@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fruit Match project</title>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <style>
+        #fruitArea,#nameArea{
+            width: 100%;
+        }
+        #fruitArea div,#nameArea div{
+            width: 100px;
+            height: 100px;
+            border: 2px solid black;
+            float: left;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="fruitArea">
+       
+    </div>
+    <div id="nameArea">
+        
+    </div>
+    <script>
+          var score=0;
+          var fruitArr=["img/apple.jpg","img/banana.jpg","img/kiwi.jpg","img/orange.jpg","img/pineapple.jpg","img/strawberry.jpg","img/watermelon.jpg"];
+          var nameArr=["Apple","Banana","Kiwi","Orange","Pineapple","Strawberry","Watermelon",];
+          $(document).ready(function(){
+            shuffle(fruitArr);
+           
+            $.each(fruitArr,function(index,value){
+                var fruit=value.slice(4,-4);
+                $("<div><img src='"+value+"'></div>")
+             
+                .appendTo("#fruitArea")
+                .draggable({revert:true,scope:fruit});
+
+            })
+            shuffle(nameArr);
+            $.each(nameArr,function(index,value){
+                $("<div>"+value+"</div>")
+                .appendTo("#nameArea")
+                .droppable({scope:value.toLowerCase(),
+                    drop:function(event,ui){
+                        $(ui.draggable).append($(this).text());
+                        score++;
+                        $(this).hide("puff","fast");
+                        if(score==nameArr.length)
+                        {
+                            $("<div>Congratulation !! Do you want to play again ?</div>")
+                            .dialog({modal:true,buttons:[{
+                                text :"Yes",
+                                click :function(){
+                                    window.location.reload();
+                                }
+                            },{
+                                text : "No",
+                                click :function(){
+                                    $(this).dialog(close);
+                                }
+                            }
+                            
+
+
+                            ]});
+
+                        }
+                    }
+                
+                })
+            })
+            function shuffle(arr){
+                return arr.sort(function(){
+                    return .5-Math.random();
+                })
+           
+            }
+            
+          })
+    </script>
+</body>
+</html>
